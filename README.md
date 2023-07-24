@@ -1,7 +1,8 @@
-# FRA502_Mobile-Robot-ROS1
-
-https://github.com/timor2542/My-First-ROS-Simulation-Project/tree/main
-
-https://github.com/TsBeNz/FRA502_BenzRobot/tree/main
-
-https://github.com/notchap30/Delirobot/tree/main
+# Testo_dd_sim_Mobile-Robot-ROS1
+## Introduction
+หุ่นยนต์สำหรับช่วย รปภ. ตรวจตราในอาคาร หุ่นจะรับคำสั่งเสียงแล้วเคลื่อนที่ไปยังห้องที่สั่ง โดยหุ่นยนต์มีล้อขับเคลื่อนแบบ differential drive
+## ใส่รูปลักษณ์หุ่นยนต์ อาจจะ จาก gazebo / rviz
+## OS and ROS
+* Ubuntu 20.04 LTS
+* ROS Noetic
+##
