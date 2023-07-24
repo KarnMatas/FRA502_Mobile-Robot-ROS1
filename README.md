@@ -40,6 +40,12 @@ roslaunch testo_dd_sim nav_to_goal.launch
 ```bash
 rosrun testo_dd_sim actionlib_send_goal_voice.py
 ```
+ห้องที่ใช้เป็นคำสั่งเสียงได้มีอยู่ 4 คำสั่ง
+* home : POSE เริ่มต้นที่หุ่น spawn
+* 101  : ห้อง 101
+* 102  : ห้อง 102
+* 103  : ห้อง 103
+  
 ##ใส่รูป ตอนรันระบบเต็ม
 ## Problems
 * ขณะนี้ในส่วนของการรับคำสั่งเสียงสามารถทำงานได้ปกติแต่ขณะใช้งานจะมี error ของ driverเกี่ยวกับเสียงขึ้นมารบกวนอยู่
