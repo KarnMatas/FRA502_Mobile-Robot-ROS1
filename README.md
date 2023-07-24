@@ -1,7 +1,9 @@
 # Testo_dd_sim_Mobile-Robot-ROS1
 ## Introduction
 หุ่นยนต์สำหรับช่วย รปภ. ตรวจตราในอาคาร หุ่นจะรับคำสั่งเสียงแล้วเคลื่อนที่ไปยังห้องที่สั่ง โดยหุ่นยนต์มีล้อขับเคลื่อนแบบ differential drive
-## ใส่รูปลักษณ์หุ่นยนต์ อาจจะ จาก gazebo / rviz
+
+![This is an image](https://github.com/KarnMatas/FRA502_Mobile-Robot-ROS1/blob/main/simulation_images/Screenshot%20from%202023-07-24%2017-23-10.png?raw=true)
+
 ## OS and ROS
 * Ubuntu 20.04 LTS
 * ROS Noetic
@@ -46,7 +48,8 @@ rosrun testo_dd_sim actionlib_send_goal_voice.py
 * 102  : ห้อง 102
 * 103  : ห้อง 103
   
-##ใส่รูป ตอนรันระบบเต็ม
+![This is an image](https://github.com/KarnMatas/FRA502_Mobile-Robot-ROS1/blob/main/simulation_images/Screenshot%20from%202023-07-24%2017-18-29.png?raw=true)
+
 ## Problems
 * ขณะนี้ในส่วนของการรับคำสั่งเสียงสามารถทำงานได้ปกติแต่ขณะใช้งานจะมี error ของ driverเกี่ยวกับเสียงขึ้นมารบกวนอยู่
 * แมพที่ลองสร้างอาจจะมีความกว้างและสิ่งกีดขวางน้อยเกินไปจนอาจทำให้ AMCL ทำงานได้ไม่ดีพอในตอนที่ทำ navigation จึงยังมีการหลงแมพอยู่
