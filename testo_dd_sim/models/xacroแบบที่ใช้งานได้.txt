@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+
+  <xacro:property name="base_link_height" value="0.129" />
+  <xacro:property name="link1_len" value="0.120" />
+  <xacro:property name="link2_len" value="0.130" />
+  <xacro:property name="link3_storke" value="0.150" />
+
+  <xacro:macro name="inertial_matrix" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="0.5" />
+    </inertial>
+  </xacro:macro>
+
+
+  <link name="base_link">
+    <visual>
+    <geometry>
+      <box size="0.1 0.1 0.1" />
+    </geometry>
+  </visual>
+  </link>
+
+  <link name="link_1">
+  </link>
+
+  <link name="link_2">
+  </link>
+
+  <link name="link_3">
+  </link>
+
+  <joint name="link1_to_base" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 ${base_link_height}"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link2_to_link1" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="${link1_len} 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link3_to_link2" type="prismatic">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="${link2_len} 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-${link3_storke}" upper="0"/>
+  </joint>
+
+
+</robot>
+
+
+
+
+
+
+
+
+
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+
+  <xacro:property name="base_link_height" value="0.15" />
+  <xacro:property name="link1_len" value="0.120" />
+  <xacro:property name="link2_len" value="0.130" />
+  <xacro:property name="link3_storke" value="0.150" />
+
+  
+
+
+  <link name="base_link">
+    <visual>
+    <origin xyz="0 0 ${base_link_height/2.0}">
+    <geometry>
+      <box size="0.5 0.3 ${base_link_height}" />
+    </geometry>
+    </visual>
+  </link>
+
+  <link name="left_wheel">
+    <visual>
+    <origin xyz="0 0 0.075"/>
+    <geometry>
+      <box size="0.5 0.3 0.15" />
+    </geometry>
+    </visual>
+  </link>
+
+  <link name="right_wheel">
+    <visual>
+    <origin xyz="0 0 0.075">
+    <geometry>
+      <box size="0.5 0.3 0.15" />
+    </geometry>
+    </visual>
+  </link>
+
+  <link name="caster_wheel">
+    <visual>
+    <origin xyz="0 0 0.075">
+    <geometry>
+      <box size="0.5 0.3 0.15" />
+    </geometry>
+    </visual>
+  </link>
+
+
+  <joint name="link1_to_base" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 ${base_link_height}"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link2_to_link1" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="${link1_len} 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link3_to_link2" type="prismatic">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="${link2_len} 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-${link3_storke}" upper="0"/>
+  </joint>
+
+
+</robot>
+
+
+<link name="left_wheel">
+    <visual>
+    <origin xyz="0 0 0.025"/>
+    <geometry>
+      <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+    </geometry>
+    </visual>
+  </link>
+
+
+  <geometry>
+        <sphere radius="${ ( (base_link_height/2.0)+(wheel_radius-0.025) )/2 }" />
+      </geometry>
+
+
+
+
+
+<!-- diff_drive -->
+  <gazebo>
+	  <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
+	   <updateRate>100</updateRate>
+	    <!-- wheels -->
+	    <left_joint>left_wheel_base</left_joint>
+	    <right_joint>right_wheel_base</right_joint>
+
+	    <!-- kinematics -->
+	    <wheel_separation>0.35</wheel_separation>
+	    <wheel_diameter>0.16</wheel_diameter>
+
+	    <!-- limits -->
+	    <max_wheel_torque>2</max_wheel_torque>
+	    <max_wheel_acceleration>0</max_wheel_acceleration>
+	    <commandTopic>cmd_vel</commandTopic>
+	    <!-- output -->
+	    <publish_odom>true</publish_odom>
+	    <publish_odom_tf>true</publish_odom_tf>
+	    <publish_wheel_tf>true</publish_wheel_tf>
+
+	    <odometry_frame>odom</odometry_frame>
+	    <robot_base_frame>base_link</robot_base_frame>
+	  </plugin>
+	</gazebo> 
