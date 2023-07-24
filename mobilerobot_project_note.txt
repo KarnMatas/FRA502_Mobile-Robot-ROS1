@@ -1,0 +1,56 @@
+sudo apt update
+sudo apt upgrade
+
+
+ros-gazebo in 5 basic steps : สำหรับดูว่าต้องทำขั้นตอนอะไรสร้างอะไรบ้างแบ่งโฟลเดอร์ยังไงดีแบบพื้นฐาน
+
+การสร้าง urdf แบบ step by step: http://wiki.ros.org/urdf/Tutorials#Learning_URDF_Step_by_Step
+การสร้าง launch file เปืด model บน rviz : https://dev.to/admantium/robot-operating-system-creating-a-robot-simulation-45f1
+				example:	roslaunch testo_dd_sim display_robot_onrviz.launch
+
+ตัวอย่างการทำให้ run rviz ด้วย xacro ได้ : https://abedgnu.github.io/Notes-ROS/chapters/ROS/10_robot_modeling/xarco.html
+
+คำสั่งรันคีบอร์ดสั่งควบคุมหุ่นยนต์ rosrun teleop_twist_keyboard teleop_twist_keyboard.py 
+คำสั่งรันsim gazebo   roslaunch testo_dd_sim robot_world_sim.launch 
+Plugin Diff drive ที่ใช้กับ  ros14 ได้ https://answers.ros.org/question/346289/topics-odom-and-cmd_vel-not-existing/
+การสร้อง ออกแบบ โลกจำลอง ดูในคลิปจารย์แพรวในยูทูป 
+หลักการใช้ plugin camera gazebo: https://articulatedrobotics.xyz/mobile-robot-9-camera/
+
+การทำ localization & navigation
+	building a map using SLAM (gmapping)มีติดตั้งด้วย : https://subscription.packtpub.com/book/iot-&-hardware/9781788478953/6/ch06lvl1sec63/building-a-map-using-slam 
+ 	เอาไฟล์ param สำหรับgmapping ในนี้ https://github.com/jocacace/diff_wheeled_robot_gazebo
+ 	
+ 	ติดตั้ง move_base package : https://answers.ros.org/question/207110/there-is-no-move_base-node-in-move_base-package/
+ 	ติดตั้ง DWA local planer : sudo apt-get install ros-kinetic-dwa-local-planner
+ 	ไฟล์ launch ใน Gmapping เอา topic ของ laser มาใส่เพื่อให้ map subscribe : <remap from="scan" to="laser"/> 
+ 	รันเก็บแมพ : roslaunch testo_dd_sim building_map_gmapping.launch
+ 	การใช้ move base with navigation stack : https://hotblackrobotics.github.io/en/blog/2018/01/29/action-client-py/
+ 	
+ 	testo_dd_sim/maps/mymap.pgm
+ 	
+ 	ติดตั้งเพิ่มnavigation package เพิ่มด้วย  https://programmerah.com/error-cannot-launch-node-of-type-amcl-amcl-amcl-47911/
+ 	ตอนนี้ต้องปรับให้หุ่นยนต์เคลื่อนที่ได้ไม่ติดขัด ลื่นไหลก็ดี , แล้วก็ทำ navigation ในrviz ให้สำเร็จแล้วก็ไปสร้าง node ต่อ ถ้าสั่งงานเองได้แล้วก็ค่อยหา lib speech to text มาใส่
+ 	8/07/2023 17.24  : ทำให้หุ่นเคลื่อนที่ดูเป็นจริงขึ้นมาได้ละ ขอบคุณมากพรี่เบนซ์ เอา mu ของgazebo มาตั้งแทน                    	
+ 			    **การตั่้งค่า fixed frame ในrviz ถ้าเก็บแมพจะ fix odom แต่ถ้าใช้ nav_movebase with static map จะใช้ fix map	          
+ 			    คิดว่าระยะ max ของ lidar มีผลต่อการเก็บแมพ ถ้าขนาดพื้นที่กว้างมาก ระยะ lidar ที่ยาวพอจะช่สวยให้เก็บแมพได้ดีกว่าไม่งั้นก็เติมสิ่งกีดขวางลงไปเพิ่ม 
+ 			   ต้องแก้ไฟล์ yaml ของแมพที่เก็บในบรรทัด images ให้ใส่แค่ชื่อไฟล์นั้นๆ เอา ชื่อ path ก่อนหน้าออก
+ 	9/07/2023 : หาวิธีเขียน node ส่ง goal ได้แล้ว จะมาลองส่ง goal ผ่าน key board ดู ถ้าเสร็จจะลองใช้ สั่งคำสั่งเสียง
+ 	            https://hotblackrobotics.github.io/en/blog/2018/01/29/action-client-py/
+ 	            เมื่อสร้าง python file แล้วต้องการทำให้ execuable ให้ไปที่ path ที่ไฟล์นั้นอยู่แล้วใช้ chmod +x ชื่อไฟล์.py 
+ 	            
+ 	*** ข้อควรปรับปรุงถ้าแมพมันมีสิ่งกีดขวางน้อยเกินและห้องกว้างเกิน เหมือน amcl จะทำงานได้ไม่ค่อยดี
+ 	10/07/2023 : ส่ง goal ผ่าน keyboard ได้แล้ว __สิ่งที่สามารถปรับปรุงได้ ตอนนี้เหมือนการ localiztion จะไม่ค่อยเสถียรเท่าไร หาสาเหตุได้ก็ได้แต่พอใช้ได้ อาจจะเพราะห้องกว้างไป ??
+ 	
+ 	11/07/2023 : ลองทำ speech recognition ส่ง goal แล้วลองเอาโปรเจคไปตกแต่งใน github ตัวเอง
+ 		       ลอง install,  pip install SpeechRecognition
+ 		     ต้องลงอันนี้ก่อน sudo apt install python3-pip
+ 		    วันนี้ทำการใช้คำสั่งเสียงได้แล้ว เหลือว่าทำให้กล้องกดถ่ายรูปได้ไหม หรืออาจจะไว้ทีหลังก็ได้
+ 		   คำสั่งรัน ระบบเต็ม คือ  roslaunch testo_dd_sim nav_to_goal.launch
+ 		  rosrun testo_dd_sim actionlib_send_goal_voice.py
+ 	 ตัวอย่าง github :
+ 	 https://github.com/notchap30/Delirobot/tree/main
+ 	 https://github.com/TsBeNz/FRA502_BenzRobot/tree/main
+ 	 https://github.com/timor2542/My-First-ROS-Simulation-Project/tree/main
+ 			          
+
+
